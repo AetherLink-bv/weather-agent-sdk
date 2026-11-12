@@ -12,7 +12,7 @@ how an optional Claude Agent SDK call could get weather data from a tool.
 ## 1. Get the project and install its packages
 
 ```text
-git clone https://github.com/RyanLisse/weather-agent-sdk.git
+git clone https://github.com/AetherLink-bv/weather-agent-sdk.git
 cd weather-agent-sdk
 npm install
 ```
@@ -26,7 +26,7 @@ found 0 vulnerabilities
 ### Check your work
 
 `npm install` finishes without an error. This project does not use a `.env`
-file. The SDK reads `ANTHROPIC_API_KEY` from the terminal environment.
+file or an API key. The live run uses your Claude Code login.
 
 ## 2. Run the tests
 
@@ -100,38 +100,31 @@ The quest succeeds and all six tests pass. Your own case, your manual judgment,
 the reviewed diff, and the two command results are visible. Stop before the
 optional live path.
 
-## 5. Try the live SDK path (optional)
+## 5. Run the agent for real
 
-The live path needs an Anthropic API key. Set it in the terminal where you will
-run the command. The key stays in that terminal session and never goes in a
-file.
-
-macOS or Linux:
+The live run uses the Claude Code login on this machine. You need no API key.
 
 ```text
-export ANTHROPIC_API_KEY=...
-npm start
+npm run live
 ```
 
-Windows PowerShell:
+Expected output includes:
 
 ```text
-$env:ANTHROPIC_API_KEY = "..."
-npm start
-```
-
-Windows Command Prompt:
-
-```text
-set ANTHROPIC_API_KEY=...
-npm start
+[tool_use] mcp__weather__get_weather
+[result] success
 ```
 
 ### Check your work
 
-With a valid key, the command prints the fixture result and starts the Claude
-Agent SDK query. The live response changes between runs. No live output is
-shown here because this walkthrough did not use an API key.
+The trace shows one `get_weather` call before the answer. The answer changes
+between runs. If the run says you are not logged in, run `claude` once and log
+in.
+
+## Bonus: extend the agent yourself
+
+Finished early? [`BONUS.md`](BONUS.md) has three short assignments. You add a
+tool and a specialist to this agent, each with a check and one real run.
 
 ## 6. Open or rebuild the course
 
@@ -187,7 +180,11 @@ the saved page matches its source files.
 | `instructions.md` | The editable clothing advice. |
 | `src/tools/get_weather.ts` | The weather tool and its fixture. |
 | `src/decide.ts` | The weather decision and clothing advice. |
-| `src/agent.ts` | The fixture runner and optional SDK query. |
+| `src/options.ts` | Everything the agent may do: instructions, tools and specialists. |
+| `src/agent.ts` | The fixture runner and the live SDK run. |
+| `src/tools/get_forecast.ts` | The bonus tool, with its TODOs. |
+| `checks/` | One check for each bonus build step. |
+| `BONUS.md` | The bonus assignments. |
 | `course/` | The interactive HTML lessons. |
 
 ## License

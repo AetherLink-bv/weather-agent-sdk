@@ -11,7 +11,10 @@
     "build": "tsc -p tsconfig.json",
     "start": "node --import tsx src/agent.ts",
     "dev": "node --import tsx src/agent.ts",
+    "live": "node --import tsx src/agent.ts --live",
     "test": "node --import tsx --test \"tests/*.test.ts\"",
+    "check:tool": "node --import tsx --test checks/bonus2.test.ts",
+    "check:agent": "node --import tsx --test checks/bonus3.test.ts",
     "quest:clothing": "node --import tsx src/quest-clothing.ts",
     "course:build": "node course/build.mjs",
     "course:check": "node course/build.mjs --check"
