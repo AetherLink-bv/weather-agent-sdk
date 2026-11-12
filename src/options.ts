@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createSdkMcpServer, type Options } from '@anthropic-ai/claude-agent-sdk';
+import { getForecastTool } from './tools/get_forecast.ts';
 import { getWeatherTool } from './tools/get_weather.ts';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -19,8 +20,7 @@ export function weatherMcpServer() {
   return createSdkMcpServer({
     name: 'weather-agent-sdk',
     version: '0.1.0',
-    // BONUS 2: add getForecastTool to this list.
-    tools: [getWeatherTool],
+    tools: [getWeatherTool, getForecastTool],
   });
 }
 
@@ -33,11 +33,14 @@ export function buildOptions(): Options {
     strictMcpConfig: true,
     extraArgs: { settings: foregroundSubagents },
     maxTurns: 6,
-    // BONUS 3: tools → ['Agent']: the main agent may delegate and has no other built-in tool.
-    tools: [],
-    // BONUS 2: add 'mcp__weather__get_forecast'. BONUS 3: add 'Agent'.
-    allowedTools: ['mcp__weather__get_weather'],
-    // BONUS 3: agents → { 'packing-agent': { description, prompt, tools: [] } }.
-    //   description: when the main agent must use it. prompt: its system message. tools: [] means it only writes.
+    tools: ['Agent'],
+    allowedTools: ['mcp__weather__get_weather', 'mcp__weather__get_forecast', 'Agent'],
+    agents: {
+      'packing-agent': {
+        description: 'Use this agent to turn a weather forecast into a short packing list. Give it the forecast.',
+        prompt: 'You are a packing specialist. You get a weather forecast for one or more days. Return a short packing list in Dutch: one line for each day with the clothing, then one line with what to bring for the whole trip. Use only the forecast you get. Never guess the weather.',
+        tools: [],
+      },
+    },
   };
 }

@@ -9,14 +9,18 @@ export const FIXTURE_FORECAST: WeatherObservation[] = [
   { city: 'Amsterdam', date: '2026-09-23', temperatureC: 9, precipitationProbability: 65 },
 ];
 
-// BONUS 2: return the first `days` entries of FIXTURE_FORECAST, each with the requested city.
-export function fetchForecast(_input: { city: string; days: number }): WeatherObservation[] {
-  throw new Error('BONUS 2 is not built yet: fetchForecast returns nothing.');
+export function fetchForecast(input: { city: string; days: number }): WeatherObservation[] {
+  return FIXTURE_FORECAST.slice(0, input.days).map((day) => ({ ...day, city: input.city }));
 }
 
-// BONUS 2: define the tool with tool('get_forecast', description, { city, days }, handler).
-//   Copy the shape of getWeatherTool in get_weather.ts. days is a whole number from 1 to 3.
-//   The handler returns { content: [{ type: 'text', text: JSON.stringify(fetchForecast(args)) }] }.
-export const getForecastTool: ReturnType<typeof tool> | undefined = undefined;
-
-void z;
+export const getForecastTool = tool(
+  'get_forecast',
+  'Fetch the forecast for a city for the next 1 to 3 days (fixture for labs).',
+  {
+    city: z.string().describe('City name'),
+    days: z.number().int().min(1).max(3).describe('Number of days, 1 to 3'),
+  },
+  async (args) => ({
+    content: [{ type: 'text' as const, text: JSON.stringify(fetchForecast(args)) }],
+  }),
+);
