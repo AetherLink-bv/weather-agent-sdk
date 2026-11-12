@@ -41,11 +41,12 @@ server to start.
 ## BONUS 2 · Add a tool · 10 minutes
 
 ```text
-Read the BONUS 2 TODOs in src/tools/get_forecast.ts and src/options.ts. Build fetchForecast and getForecastTool, add the tool to the MCP server and to allowedTools, and add one line to instructions.md that says when to call get_forecast. Copy the shape of get_weather.ts. Change no other file. Run npm run check:tool until it passes. Run npm run live -- "Wat is het weer de komende drie dagen in Utrecht?" once and show the trace. Then explain in four lines: how the agent knows that the tool exists, how it knows when to call it, and what the schema protects against. Stop.
+Run npm run live -- "Wat is het weer de komende drie dagen in Utrecht?" and count the get_weather calls. Read the BONUS 2 TODOs in src/tools/get_forecast.ts and src/options.ts. Build fetchForecast and getForecastTool, add the tool to the MCP server and to allowedTools, and add one line to instructions.md that says when to call get_forecast. Copy the shape of get_weather.ts. Change no other file. Run npm run check:tool until it passes. Run the same question again and show that one get_forecast call replaces them. Then explain in four lines: how the agent knows that the tool exists, how it knows when to call it, and what the schema protects against. Stop.
 ```
 
-**Check:** `npm run check:tool` passes, and the trace shows one
-`mcp__weather__get_forecast` call.
+**Check:** `npm run check:tool` passes. Before the build the trace shows three
+`get_weather` calls. After the build it shows one `mcp__weather__get_forecast`
+call.
 
 **Why:** a tool has three parts. The description tells the agent when to call
 it. The schema limits the input. The handler is normal code that you can test
@@ -54,7 +55,7 @@ without a model.
 ## BONUS 3 · Add a specialist · 10 minutes
 
 ```text
-Read the BONUS 3 TODOs in src/options.ts. Add packing-agent to options.agents with a description, a prompt and tools: []. It turns a forecast into a short packing list in Dutch and never guesses the weather. Set tools to ['Agent'], add 'Agent' to allowedTools, and add one line to instructions.md that says when to ask packing-agent. Change no other file. Run npm run check:agent until it passes. Run npm run live -- "Ik ga drie dagen naar Utrecht. Wat pak ik in?" once and show the trace. Then explain in four lines: why the specialist has no tools, what it can see of the conversation, and what the main agent does with its answer. Stop.
+Run npm run check:agent and show what is red. Read the BONUS 3 TODOs in src/options.ts. Add packing-agent to options.agents with a description, a prompt and tools: []. It turns a forecast into a short packing list in Dutch and never guesses the weather. Set tools to ['Agent'], add 'Agent' to allowedTools, and add one line to instructions.md that says when to ask packing-agent. Change no other file. Run npm run check:agent until it passes. Run npm run live -- "Ik ga drie dagen naar Utrecht. Wat pak ik in?" once and show the trace. Then explain in four lines: why the specialist has no tools, what it can see of the conversation, and what the main agent does with its answer. Stop.
 ```
 
 **Check:** `npm run check:agent` passes, and the trace shows
